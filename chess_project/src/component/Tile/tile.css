@@ -1,0 +1,11 @@
+.tile .piece{
+    height: 60px;
+    width: 60px;
+}
+.tile .piece:hover{
+    cursor: grab;
+}
+
+.tile .piece:active{
+    cursor: grabbing;
+}
