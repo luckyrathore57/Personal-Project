@@ -1,56 +1,46 @@
 import { MovesInterface, getBisopMove, getKingMove, getKnightMove, getPawnMove, getQueenMove, getRookMove } from "./getMoves";
+import { movePawn, movePiece } from "./movesUse";
 // import { movePawn, movePiece } from "./movesUse";
 
-export const getMove = ({ currentPosition,prevPosition,castling, piece, file, rank }: MovesInterface) => {
-    const pieceType = piece[1]
-    switch (pieceType) {
-        case 'r': {
-            return getRookMove({ currentPosition, piece, file, rank });
-        }
-        case 'b':{
-            return getBisopMove({currentPosition,piece,file,rank});
-        }
-        case 'n':{
-            return getKnightMove({currentPosition,piece,file,rank})
-        }
-        case 'q':{
-            return getQueenMove({currentPosition,piece,file,rank})
-        }
-        case 'k':{
-            return getKingMove({currentPosition,castling,piece,file,rank})
-        }
-        case 'p':{
-            return getPawnMove({currentPosition,prevPosition,piece,file,rank})
-        }
-        default:{
-            return [];
-        }
+const arbiter = {
+    getMove:({ currentPosition,prevPosition, piece, file, rank }: MovesInterface) => {
+        const pieceType = piece[1]
+        switch (pieceType) {
+            case 'r': {
+                return getRookMove({ currentPosition, piece, file, rank });
+            }
+            case 'b':{
+                return getBisopMove({currentPosition,piece,file,rank});
+            }
+            case 'n':{
+                return getKnightMove({currentPosition,piece,file,rank})
+            }
+            case 'q':{
+                return getQueenMove({currentPosition,piece,file,rank})
+            }
+            case 'k':{
+                return getKingMove({currentPosition,piece,file,rank})
+            }
+            case 'p':{
+                return getPawnMove({currentPosition,prevPosition,piece,file,rank})
+            }
+            default:{
+                return [];
+            }
 
+        }
+    },
+    performMove:function({ position, piece, file, rank ,x,y}:{position:string[][],piece:string,rank:number,file:number,x:number,y:number}){
+        if(piece.endsWith('p')){
+            return movePawn({position, piece, file, rank,x,y});
+        }
+        else{
+            return movePiece({ position, piece, file, rank ,x,y})
+        }
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default arbiter;
 
 
 // export const isInCheck=({position,positionAfterMove,turn,castling}:{position:string[][],positionAfterMove:string[][],turn:string,castling:string}):boolean=>{

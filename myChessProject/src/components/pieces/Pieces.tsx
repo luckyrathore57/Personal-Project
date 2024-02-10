@@ -1,6 +1,6 @@
 import { useAppContext } from "../../context/context";
 import copyPosition from "../../helper";
-import { clearCandidates } from "../../reducer/action/game";
+import { clearCandidates, promotionUpdate } from "../../reducer/action/game";
 import { makeNewMove } from "../../reducer/action/move";
 import Piece from "./Piece";
 import './Pieces.css';
@@ -38,7 +38,7 @@ const Pieces = () => {
     const makeNewPosition = (rank: string, file: string, x: number, y: number, piece: string): string[][] => {
         const rankNum = Number(rank);
         const fileNum = Number(file);
-        if (piece[1] === 'p' && y !== rankNum && x !== fileNum) {
+        if (piece[1] === 'p' && y !== rankNum && x !== fileNum && currentPosition[y][x]==="") {
             const newPosition = copyPosition(currentPosition);
             newPosition[rankNum][fileNum] = '';
             newPosition[rankNum][x]='';
@@ -46,6 +46,7 @@ const Pieces = () => {
             return newPosition;
 
         }
+        
         else if(piece[1]==='k' && Math.abs(fileNum-x)>1){
             const [change,shift]=(x-fileNum>0)?[7,-1]:[0,1];
             
@@ -57,6 +58,7 @@ const Pieces = () => {
             return newPosition;
         }
         else {
+      
             const newPosition = copyPosition(currentPosition);
             newPosition[rankNum][fileNum] = '';
             newPosition[y][x] = piece;
@@ -67,6 +69,11 @@ const Pieces = () => {
         const [piece, rank, file] = e.dataTransfer.getData('text').split(',');
         const [x, y] = calculateCordinate(e);
         if (isValidMove(x, y)) {
+                  
+            if(piece[1]==='p' && (y===0 || y===7)){
+                dispatch(promotionUpdate(piece,x,y,Number(file),Number(rank)))
+                return;
+            }
             const newPosition = makeNewPosition(rank, file, x, y, piece)
             const actionForNewMove = makeNewMove(newPosition);
             dispatch(actionForNewMove);

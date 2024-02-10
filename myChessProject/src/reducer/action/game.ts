@@ -13,3 +13,18 @@ export const clearCandidates=(piece:string)=>{
         payload:piece
     }
 }
+
+export const promotionUpdate=(piece:string,x:number,y:number,file:number,rank:number)=>{
+    return{
+        type:actionType.Promotion_Update,
+        payload:{piece,x,y,file,rank}
+    }
+}
+
+export const promotionAction=(newPosition:string[][])=>{
+
+    return {
+        type:actionType.Promotion_Action,
+        payload:newPosition
+    }
+}

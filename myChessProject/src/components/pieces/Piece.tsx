@@ -1,4 +1,4 @@
-import { getMove } from '../../arbiter/arbiter';
+import  arbiter  from '../../arbiter/arbiter';
 import { useAppContext } from '../../context/context';
 import { clearCandidates, generateCandidates } from '../../reducer/action/game';
 import './Pieces.css';
@@ -20,7 +20,7 @@ const Piece = (props: { rank: number, file: number, piece: string }) => {
 
 
         if (piece[0] === turn) {
-            const candidates = getMove({ currentPosition, prevPosition,castling, piece: piece, file, rank });
+            const candidates = arbiter.getMove({ currentPosition, prevPosition,castling, piece: piece, file, rank });
             dispatch(generateCandidates({ candidates, piece }))
         }
     }

@@ -7,7 +7,8 @@ export interface appState{
     turn:string,
     candidates:[number,number][],
     activePiece:string,
-    castling:{w:string,b:string}
+    castling:{w:string,b:string},
+    promotion:number[]
 }
 interface ContextType{
     appState:appState,

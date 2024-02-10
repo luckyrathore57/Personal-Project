@@ -1,3 +1,4 @@
+
 import { appState } from "../context/context";
 import { actionType } from "./actionType";
 
@@ -35,6 +36,27 @@ export const reducer=(state:appState,action:ActionInterface):appState=>{
             }
         }
 
+        case actionType.Promotion_Update:{
+            const {x,y,file,rank}=action.payload;
+            const promotion:[number,number,number,number]=[x,y,file,rank]
+            return{
+                ...state,promotion
+            }
+        }
+        case actionType.Promotion_Action:{
+            let {position,turn}=state
+     
+            position=[
+                ...position,
+                action.payload
+            ]
+            turn = turn==='w'?'b':'w';
+            return {
+                ...state,
+                position,
+                turn
+            }
+        }
 
 
         default:{

@@ -126,7 +126,7 @@ export const getPawnMove = ({ currentPosition,prevPosition, piece, file, rank }:
     const [dir, start] = (us === 'w') ? [1, 0] : [-1, 7];
     let candidatesMove: [number, number][] = [];
 
-    if(currentPosition[rank+2*dir]){
+    if(currentPosition[rank+1*dir]){
         if( currentPosition[rank + dir][file] === ""){
             candidatesMove.push([rank+dir,file]);
         }
