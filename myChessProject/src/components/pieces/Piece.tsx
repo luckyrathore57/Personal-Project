@@ -20,8 +20,8 @@ const Piece = (props: { rank: number, file: number, piece: string }) => {
 
 
         if (piece[0] === turn) {
-            const candidates = arbiter.getMove({ currentPosition, prevPosition,castling, piece: piece, file, rank });
-            dispatch(generateCandidates({ candidates, piece }))
+            const candidates = arbiter.getValidMoves({ currentPosition, prevPosition,castling, piece: piece, file, rank });
+            dispatch(generateCandidates({candidates, piece }))
         }
     }
 

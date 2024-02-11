@@ -6,5 +6,7 @@ export const initGameState = {
     candidates:[],
     activePiece:'',
     castling:{w:'both',b:'both'},
-    promotion:[-1,-1,-1,-1]
+    promotion:[-1,-1,-1,-1],
+    check:"",
+    gameEnd:""
 }

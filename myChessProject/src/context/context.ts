@@ -8,7 +8,9 @@ export interface appState{
     candidates:[number,number][],
     activePiece:string,
     castling:{w:string,b:string},
-    promotion:number[]
+    promotion:number[],
+    check:string,
+    gameEnd:string
 }
 interface ContextType{
     appState:appState,

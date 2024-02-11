@@ -58,6 +58,37 @@ export const reducer=(state:appState,action:ActionInterface):appState=>{
             }
         }
 
+        case actionType.Can_Castle:{
+            let {turn,castling}=state;
+            if(turn==='w'){
+                castling.w=action.payload;
+            }
+            else{
+                castling.b=action.payload;
+            }
+
+            return{
+                ...state,castling
+            }
+        }
+        
+        case actionType.Update_Check:{
+            return{
+                ...state,check:action.payload
+            }
+        }
+
+        case actionType.Game_End:{
+            return{
+                ...state,gameEnd:action.payload
+            }
+        }
+
+        case actionType.New_Game:{
+            
+            return action.payload
+            
+        }
 
         default:{
             return state

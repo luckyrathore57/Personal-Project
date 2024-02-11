@@ -1,3 +1,4 @@
+import { appState } from "../../context/context";
 import { actionType } from "../actionType";
 
 export const generateCandidates=({candidates,piece}:{candidates:[number,number][],piece:string})=>{
@@ -26,5 +27,35 @@ export const promotionAction=(newPosition:string[][])=>{
     return {
         type:actionType.Promotion_Action,
         payload:newPosition
+    }
+}
+
+
+export const castlingUpdate=(newCastle:string)=>{
+    return {
+        type:actionType.Can_Castle,
+        payload:newCastle
+    }
+}
+
+export const updateCheck=(checkedPlayer:string)=>{
+    return{
+        type:actionType.Update_Check,
+        payload:checkedPlayer
+    }
+}
+
+export const gameEnd=(gameStatus:string)=>{
+    return {
+        type:actionType.Game_End,
+        payload:gameStatus
+    }
+}
+
+
+export const newGame=(state:appState)=>{
+    return{
+    type:actionType.New_Game,
+    payload:state
     }
 }

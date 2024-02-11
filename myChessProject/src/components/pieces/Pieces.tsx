@@ -1,6 +1,8 @@
+
+import arbiter, { kingPosition } from "../../arbiter/arbiter";
 import { useAppContext } from "../../context/context";
 import copyPosition from "../../helper";
-import { clearCandidates, promotionUpdate } from "../../reducer/action/game";
+import { castlingUpdate, clearCandidates, gameEnd, promotionUpdate, updateCheck } from "../../reducer/action/game";
 import { makeNewMove } from "../../reducer/action/move";
 import Piece from "./Piece";
 import './Pieces.css';
@@ -12,7 +14,9 @@ const Pieces = () => {
     const ref = useRef<HTMLDivElement>(null);
 
     const currentPosition: string[][] = appState.position[appState.position.length - 1];
+    const prevPosition: string[][] = appState.position[appState.position.length - 2];
     const candidates = appState.candidates;
+    const castling=appState.castling;
 
     const calculateCordinate = (e: React.DragEvent): number[] => {
         const element = ref.current;
@@ -23,6 +27,32 @@ const Pieces = () => {
             return [x, y];
         }
         return []
+    }
+
+
+    const updateGameEnd=(position:string[][],prevPosition:string[][],player:string)=>{
+        const enemy=player==='w'?'b':'w';
+        const ans=arbiter.gameEnd({position,prevPosition,turn:enemy});
+        
+        if(ans){
+            dispatch(gameEnd(ans));
+        }
+    }
+
+
+    const updateForCheck=(player:string,position:string[][])=>{
+        const enemy=player==='w'?'b':'w';
+        
+        // console.log(arbiter.isInCheck({position,player:enemy,prevPosition}),enemy);
+
+        if(arbiter.isInCheck({position,player:enemy,prevPosition})){
+            const kingPos=kingPosition({player:enemy,position});
+            const ans=`${enemy}${kingPos[0]}${kingPos[1]}`
+            dispatch(updateCheck(ans));
+        }
+        else{
+            dispatch(updateCheck(""))
+        }
     }
 
     const isValidMove = (x: number, y: number) => {
@@ -44,20 +74,41 @@ const Pieces = () => {
             newPosition[rankNum][x]='';
             newPosition[y][x] = piece;
             return newPosition;
-
         }
         
         else if(piece[1]==='k' && Math.abs(fileNum-x)>1){
-            const [change,shift]=(x-fileNum>0)?[7,-1]:[0,1];
             
+            const [change,shift]=(x-fileNum>0)?[7,-1]:[0,1];
             const newPosition = copyPosition(currentPosition);
             newPosition[rankNum][fileNum] = '';
             newPosition[y][x+shift]=newPosition[y][change];
             newPosition[y][change]='';
             newPosition[y][x] = piece;
+            dispatch(castlingUpdate('none'));
             return newPosition;
         }
+
         else {
+            const player:'w'|'b'=piece[0]==='w'?'w':'b';
+            if(piece[1]==='k' || piece[1]==='r'){
+                if(fileNum===0){
+                    if(castling[player]==='both'){
+                        dispatch(castlingUpdate('right'));
+                    }
+                    else if(castling[player]==='left'){
+                        dispatch(castlingUpdate('none'));
+                    }
+                }
+                if(fileNum===7){
+                    if(castling[player]==='both'){
+                        dispatch(castlingUpdate('left'));
+                    }
+                    else if(castling[player]==='right'){
+                        dispatch(castlingUpdate('none'));
+                    }
+                }
+
+            }
       
             const newPosition = copyPosition(currentPosition);
             newPosition[rankNum][fileNum] = '';
@@ -75,8 +126,10 @@ const Pieces = () => {
                 return;
             }
             const newPosition = makeNewPosition(rank, file, x, y, piece)
-            const actionForNewMove = makeNewMove(newPosition);
+            const actionForNewMove = makeNewMove(newPosition)
             dispatch(actionForNewMove);
+            updateForCheck(piece[0],newPosition);
+            updateGameEnd(newPosition,prevPosition,piece[0]);
         }
         dispatch(clearCandidates(piece));
     }

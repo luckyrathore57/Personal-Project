@@ -18,6 +18,7 @@ export const createPosition=():string[][]=>{
     position[0][3]='wq'
     position[0][4]='wk'
     
+    
     position[7][0]='br'
     position[7][7]='br'
     position[7][1]='bn'

@@ -1,4 +1,3 @@
-import {  enPassant } from "./specialMove";
 
 export interface MovesInterface {
     currentPosition: string[][],
@@ -109,12 +108,10 @@ export const getKingMove = ({ currentPosition,castling, piece, file, rank }: Mov
     ];
     let candidatesMove: [number, number][] = [];
     direction.forEach((dir) => {
-        if (currentPosition[rank + dir[0]] && !currentPosition[rank + dir[0]][file + dir[1]].startsWith(us)) {
+        if (currentPosition[rank + dir[0]] && (currentPosition[rank + dir[0]][file + dir[1]] || currentPosition[rank+dir[0]][file+dir[1]]==="") && !currentPosition[rank + dir[0]][file + dir[1]].startsWith(us)) {
             candidatesMove.push([rank + dir[0], file + dir[1]]);
         }
     })
-    
-    // candidatesMove=candidatesMove.concat(castlingMove({ currentPosition, castling, piece, rank, file}));
     
 
     return candidatesMove;
@@ -143,10 +140,12 @@ export const getPawnMove = ({ currentPosition,prevPosition, piece, file, rank }:
             candidatesMove.push([rank + 2 * dir, file]);
         }
     }
-    candidatesMove=candidatesMove.concat(enPassant({currentPosition,prevPosition,piece,rank,file}))
+    // candidatesMove=candidatesMove.concat(enPassant({currentPosition,prevPosition,piece,rank,file}))
     return candidatesMove;
 
 }
+
+
 
 
 

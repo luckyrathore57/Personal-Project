@@ -11,7 +11,7 @@ function Board() {
     const ranks: number[] = new Array(8).fill(0).map((rank, i) => 8 - i);
     const files: number[] = new Array(8).fill(0).map((file, i) => i + 1);
     const { appState } = useAppContext();
-    const { candidates } = appState;
+    const { candidates,check } = appState;
     const currentPosition=appState.position[appState.position.length-1];
     // console.log(candidates);
     
@@ -29,6 +29,10 @@ function Board() {
                 }
             }
         })
+
+        if(check && i===Number(check[1]) && j===Number(check[2])){
+            classt=`${classt} check`
+        }
         return classt;
     }
     
