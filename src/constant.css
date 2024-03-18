@@ -12,3 +12,9 @@
         --tile-size : 50px;
     }
 }
+
+@media all and (max-width: 400px) {
+    :root {
+        --tile-size : 40px;
+    }
+}

@@ -21,9 +21,11 @@ const Pieces = () => {
     const calculateCordinate = (e: React.DragEvent): number[] => {
         const element = ref.current;
         const cords: { top: number, left: number, width: number } | undefined = element?.getBoundingClientRect();
+        
         if (cords) {
-            const x = Math.floor((e.clientX - cords.left) / 60);
-            const y = Math.floor(8 - (e.clientY - cords.top) / 60);
+            const size=cords.width /8;
+            const x = Math.floor((e.clientX - cords.left) / size);
+            const y = Math.floor(8 - (e.clientY - cords.top) / size);
             return [x, y];
         }
         return []
